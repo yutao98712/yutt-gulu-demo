@@ -1,5 +1,8 @@
 <template>
   <button class="g-button">
+    <svg class="icon">
+      <use xlink:href="#i-setting"></use>
+    </svg>
     <slot></slot>
   </button>
 </template>
@@ -25,6 +28,10 @@ export default {
   }
   &:focus {
     outline: none;
+  }
+  .icon {
+    width: 1em;
+    height: 1em;
   }
 }
 </style>
