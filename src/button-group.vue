@@ -4,6 +4,20 @@
   </div>
 </template>
 
+<script>
+export default {
+  mounted() {
+    let name = ''
+    for (let node of this.$el.children) {
+      name = node.nodeName.toLowerCase()
+      if( name !== 'button') {
+        console.warn('g-button-goup的子元素应该是g-button, 但是你写的是' + name)
+      }
+    }
+  }
+}
+</script>
+
 <style lang="scss" scoped>
 .g-button-group {
   display: inline-flex;
