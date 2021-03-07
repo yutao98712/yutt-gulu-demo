@@ -59,7 +59,15 @@ export default {
   &:focus {
     outline: none;
   }
- 
+  &.icon-left {
+    > .icon {
+      order: 1;
+      margin-right: .3em;
+    }
+    >.content {
+      order: 2
+    }
+  }
   &.icon-right {
     > .icon {
       order: 2;
