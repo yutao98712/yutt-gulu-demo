@@ -30,61 +30,69 @@ const expect = chai.expect;
 chai.use(spies)
 const VM = Vue.extend(Button)
 
-{
-  const button = new VM({
-    propsData: {
-      icon: 'setting'
-    }
-  })
-  button.$mount()
-  let useElement = button.$el.querySelector('use')
-  expect(useElement.getAttribute('xlink:href')).to.eq('#i-setting')
-  button.$el.remove()
-  button.$destroy()
-}
 
-{
-  const Constructor = Vue.extend(Button)
-  const button = new Constructor({
-    propsData: {
-
-      loading: true
-    }
+try {
+  {
+    const button = new VM({
+      propsData: {
+        icon: 'setting'
+      }
+    })
+    button.$mount()
+    let useElement = button.$el.querySelector('use')
+    expect(useElement.getAttribute('xlink:href')).to.eq('#i-setting')
+    button.$el.remove()
+    button.$destroy()
+  }
+  
+  {
+    const button = new VM({
+      propsData: {
+        icon: 'setting',
+        loading: true
+      }
+    })
+    button.$mount()
+    let useElement = button.$el.querySelector('use')
+    expect(useElement.getAttribute('xlink:href')).to.eq('#i-loading')
+    button.$el.remove()
+    button.$destroy()
+  }
+  
+  {
+    const div = document.createElement('div')
+    document.body.appendChild(div)
+    const button = new VM({
+      propsData: {
+        icon: 'setting',
+        iconPosition: 'left'
+      }
+    })
+    button.$mount(div);
+    let svg = button.$el.querySelector('svg')
+    let { order } = window.getComputedStyle(svg)
+    expect(order).to.eq('1')
+    button.$el.remove()
+    button.$destroy() 
+  }
+  
+  {
+    const vm = new VM({
+      propsData: {
+        icon: 'settings'
+      }
+    })
+    vm.$mount()
+    let spy = chai.spy(function() {})
+    vm.$on('click', spy)
+    let button = vm.$el
+    button.click()
+    expect(spy).to.have.been.called()
+  }
+} catch (error) {
+  window.errors = [error]
+} finally {
+  window.errors.forEach(error => {
+    console.error(error.message)
   })
-  button.$mount()
-  const useElement = button.$el.querySelector('use')
-  expect(useElement.getAttribute('xlink:href')).to.eq('#i-loading')
-  button.$el.remove()
-  button.$destroy()
-}
-
-{
-  const div = document.createElement('div')
-  document.body.appendChild(div)
-  const button = new VM({
-    propsData: {
-      icon: 'setting',
-      iconPosition: 'left'
-    }
-  })
-  button.$mount(div);
-  let svg = button.$el.querySelector('svg')
-  let { order } = window.getComputedStyle(svg)
-  expect(order).to.eq('1')
-  button.$el.remove()
-  button.$destroy() 
-}
-
-{
-  const vm = new VM({
-    propsData: {
-      icon: 'settings'
-    }
-  })
-  vm.$mount()
-  let spy = chai.spy(function() {})
-  vm.$on('click', spy)
-  let button = vm.$el
-  button.click()
-  expect(spy).to.have.been.called()
 }
